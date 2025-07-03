@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio | João Augusto</title>
+    <meta name="description" content="Portfólio de um Desenvolvedor Web Full Stack apaixonado por criar soluções inovadoras.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                    <li><a href="#projects">Projetos</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle" aria-label="Alternar tema">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </header>
+    <main>
+        <section id="home" class="home-section">
+            <div class="container">
+                <div class="home-content">
+                    <h1>Olá, eu sou João Augusto</h1>
+                    <p class="subtitle">Desenvolvedor Web Full Stack</p>
+                    <p class="description">Transformo ideias em experiências digitais criativas e funcionais.</p>
+                    <a href="#projects" class="btn">Ver Projetos</a>
+                </div>
+            </div>
+        </section>
+        <section id="about">
+            <div class="container">
+                <h2>Sobre Mim</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Sou um desenvolvedor apaixonado por tecnologia e por criar soluções que impactam positivamente a vida das pessoas. Com experiência em todo o ciclo de desenvolvimento, do frontend ao backend, busco sempre as melhores práticas e as tecnologias mais modernas para entregar projetos de alta qualidade.</p>
+                    </div>
+                    <div class="skills">
+                        <h3>Habilidades</h3>
+                        <div class="skills-icons">
+                            <i class="fab fa-html5" title="HTML5"></i>
+                            <i class="fab fa-css3-alt" title="CSS3"></i>
+                            <i class="fab fa-js" title="JavaScript"></i>
+                            <i class="fab fa-php" title="PHP"></i>
+                            <i class="fab fa-figma" title="Figma"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="projects">
+            <div class="container">
+                <h2>Meus Projetos</h2>
+                <div id="projects-grid" class="projects-grid">
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <div class="container">
+                <h2>Entre em Contato</h2>
+                <div class="social-links">
+                    <a href="https://wa.me/5531996799370" target="_blank" aria-label="Whatsapp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://github.com/AugustoD3v" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://instagram.com/ssh.augusto" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCSEp_b5Dx4g8-eM0k5bAoyA" target="_blank" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>© <span id="copyright-year"></span> - João Augusto. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const projects = [
+                {
+                    title: "Landing Page para Venda de E-book",
+                    image: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=500&auto=format&fit=crop&q=60",
+                    tech: ["HTML", "CSS"],
+                    githubLink: "https://github.com/AugustoD3v/courselandingpage.github.io",
+                    liveLink: "https://transformafacil.online"
+                },
+                {
+                    title: "Protótipo de Site de Recargas",
+                    image: "https://images.unsplash.com/photo-1601933973783-43cf8a7d4c5f?w=500&auto=format&fit=crop&q=60",
+                    tech: ["HTML", "CSS"],
+                    githubLink: "https://github.com/AugustoD3v/phonerecharge.github.io",
+                    liveLink: "https://augustod3v.github.io/phonerecharge.github.io/"
+                }
+            ];
+
+            const projectsGrid = document.getElementById('projects-grid');
+            if (projectsGrid) {
+                projectsGrid.innerHTML = '';
+                projects.forEach(project => {
+                    const projectCard = document.createElement('div');
+                    projectCard.className = 'project-card';
+                    projectCard.innerHTML = `
+                        <img src="${project.image}" alt="Print do projeto ${project.title}">
+                        <div class="project-card-content">
+                            <h3>${project.title}</h3>
+                            <div class="project-tech">
+                                ${project.tech.map(t => `<span>${t}</span>`).join('')}
+                            </div>
+                            <div class="project-links">
+                                <a href="${project.githubLink}" target="_blank">GitHub <i class="fas fa-external-link-alt"></i></a>
+                                <a href="${project.liveLink}" target="_blank">Live Demo <i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                        </div>
+                    `;
+                    projectsGrid.appendChild(projectCard);
+                });
+            }
+
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            const toggleIcon = themeToggle.querySelector('i');
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                body.className = savedTheme;
+            }
+
+            if (body.classList.contains('light-theme')) {
+                toggleIcon.classList.remove('fa-sun');
+                toggleIcon.classList.add('fa-moon');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('light-theme');
+                body.classList.toggle('dark-theme');
+
+                if (body.classList.contains('light-theme')) {
+                    toggleIcon.classList.remove('fa-sun');
+                    toggleIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'light-theme');
+                } else {
+                    toggleIcon.classList.remove('fa-moon');
+                    toggleIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'dark-theme');
+                }
+            });
+
+            const copyrightYear = document.getElementById('copyright-year');
+            if(copyrightYear) {
+                copyrightYear.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+</body>
+</html>
