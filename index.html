@@ -10,8 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="modal.css">
 </head>
 <body class="dark-theme">
+
     <header>
         <div class="container">
             <nav>
@@ -27,6 +29,7 @@
             </button>
         </div>
     </header>
+
     <main>
         <section id="home" class="home-section">
             <div class="container">
@@ -38,6 +41,7 @@
                 </div>
             </div>
         </section>
+
         <section id="about">
             <div class="container">
                 <h2>Sobre Mim</h2>
@@ -58,6 +62,7 @@
                 </div>
             </div>
         </section>
+
         <section id="projects">
             <div class="container">
                 <h2>Meus Projetos</h2>
@@ -65,6 +70,7 @@
                 </div>
             </div>
         </section>
+
         <section id="contact">
             <div class="container">
                 <h2>Entre em Contato</h2>
@@ -72,58 +78,174 @@
                     <a href="https://wa.me/5531996799370" target="_blank" aria-label="Whatsapp"><i class="fab fa-whatsapp"></i></a>
                     <a href="https://github.com/AugustoD3v" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="https://instagram.com/ssh.augusto" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/channel/UCSEp_b5Dx4g8-eM0k5bAoyA" target="_blank" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://youtube.com/@augusto_dev" target="_blank" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </section>
     </main>
+
     <footer>
         <div class="container">
             <p>© <span id="copyright-year"></span> - João Augusto. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-body">
+                <div class="carousel-container">
+                    <div class="carousel-slide">
+                    </div>
+                    <button class="carousel-prev">&#10094;</button>
+                    <button class="carousel-next">&#10095;</button>
+                </div>
+                <h3 id="modal-title"></h3>
+                <p id="modal-description"></p>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            const projects = [
+            const projectsData = [
                 {
+                    id: 1,
                     title: "Landing Page para Venda de E-book",
-                    image: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=500&auto=format&fit=crop&q=60",
+                    image: ["ebook/ebook-1.jpg", "ebook/ebook-2.jpg", "ebook/ebook-3.jpg", "ebook/ebook-4.jpg", "ebook/ebook-5.jpg","ebook/ebook-6.jpg"],
                     tech: ["HTML", "CSS"],
                     githubLink: "https://github.com/AugustoD3v/courselandingpage.github.io",
-                    liveLink: "https://transformafacil.online"
+                    liveLink: "https://transformafacil.online",
+                    description: "Uma landing page responsiva e elegante para promover e vender um e-book. Foco na conversão e experiência do usuário."
                 },
                 {
+                    id: 2,
                     title: "Protótipo de Site de Recargas",
-                    image: "https://images.unsplash.com/photo-1601933973783-43cf8a7d4c5f?w=500&auto=format&fit=crop&q=60",
+                    image: ["recargas/recargas-1.jpg", "recargas/recargas-2.jpg", "recargas/recargas-3.jpg", "recargas/recargas-4.jpg", "recargas/recargas-5.jpg"],
                     tech: ["HTML", "CSS"],
                     githubLink: "https://github.com/AugustoD3v/phonerecharge.github.io",
-                    liveLink: "https://augustod3v.github.io/phonerecharge.github.io/"
+                    liveLink: "https://augustod3v.github.io/phonerecharge.github.io/",
+                    description: "Um protótipo visual de um site para realizar recargas online de telefones celulares. Interface intuitiva e fluxo de usuário simplificado."
+                },
+                {
+                    id: 3,
+                    title: "SaaS - Catálogo Digital para Restaurantes",
+                    image: ["catalogo/catalogo-1.jpg", "catalogo/catalogo-2.jpg", "catalogo/catalogo-3.jpg", "catalogo/catalogo-4.jpg",  "catalogo/catalogo-5.jpg",  "catalogo/catalogo-6.jpg",  "catalogo/catalogo-7.jpg",  "catalogo/catalogo-8.jpg", "catalogo/catalogo-9.jpg",  "catalogo/catalogo-10.jpg",  "catalogo/catalogo-11.jpg",  "catalogo/catalogo-12.jpg",  "catalogo/catalogo-13.jpg",  "catalogo/catalogo-14.jpg",  "catalogo/catalogo-15.jpg",  "catalogo/catalogo-16.jpg"],
+                    tech: ["PHP", "MySQL", "JavaScript", "HTML", "CSS"],
+                    githubLink: null,
+                    liveLink: null,
+                    description: "Um sistema SaaS para restaurantes e comércios alimentícios gerenciarem seus catálogos digitais, com opções de cardápio interativo e pedidos online."
                 }
             ];
 
             const projectsGrid = document.getElementById('projects-grid');
+            const modal = document.getElementById('project-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const carouselSlide = document.querySelector('.carousel-slide');
+            const prevButton = document.querySelector('.carousel-prev');
+            const nextButton = document.querySelector('.carousel-next');
+            const closeButton = document.querySelector('.close-button');
+
+            let currentImageIndex = 0;
+            let projectImages = [];
+
+            function openModal(projectId) {
+                const project = projectsData.find(p => p.id === projectId);
+                if (project) {
+                    modal.style.display = "flex";
+                    modalTitle.textContent = project.title;
+                    modalDescription.textContent = project.description;
+                    projectImages = project.image;
+                    currentImageIndex = 0;
+                    updateCarousel();
+                    document.body.classList.add('modal-open');
+                }
+            }
+
+            function closeModal() {
+                modal.style.display = "none";
+                document.body.classList.remove('modal-open');
+            }
+
+            function updateCarousel() {
+                carouselSlide.innerHTML = '';
+                projectImages.forEach((imgSrc, index) => {
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.alt = `Imagem ${index + 1} do projeto`;
+                    carouselSlide.appendChild(img);
+                });
+                
+                const slideWidth = carouselSlide.querySelector('img').clientWidth;
+                carouselSlide.style.transform = `translateX(-${currentImageIndex * slideWidth}px)`;
+
+                prevButton.style.display = currentImageIndex === 0 ? 'none' : 'block';
+                nextButton.style.display = currentImageIndex === projectImages.length - 1 ? 'none' : 'block';
+            }
+            
+            function showNextImage() {
+                if (currentImageIndex < projectImages.length - 1) {
+                    currentImageIndex++;
+                    updateCarousel();
+                }
+            }
+
+            function showPrevImage() {
+                 if (currentImageIndex > 0) {
+                    currentImageIndex--;
+                    updateCarousel();
+                }
+            }
+
+            prevButton.addEventListener('click', showPrevImage);
+            nextButton.addEventListener('click', showNextImage);
+
+            closeButton.addEventListener('click', closeModal);
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
             if (projectsGrid) {
                 projectsGrid.innerHTML = '';
-                projects.forEach(project => {
+                projectsData.forEach(project => {
                     const projectCard = document.createElement('div');
                     projectCard.className = 'project-card';
                     projectCard.innerHTML = `
-                        <img src="${project.image}" alt="Print do projeto ${project.title}">
+                        <img src="${project.image && project.image.length > 0 ? project.image[0] : 'https://via.placeholder.com/400x225'}" alt="Imagem do projeto ${project.title}" loading="lazy" style="cursor: pointer;" data-project-id="${project.id}">
                         <div class="project-card-content">
                             <h3>${project.title}</h3>
                             <div class="project-tech">
                                 ${project.tech.map(t => `<span>${t}</span>`).join('')}
                             </div>
                             <div class="project-links">
-                                <a href="${project.githubLink}" target="_blank">GitHub <i class="fas fa-external-link-alt"></i></a>
-                                <a href="${project.liveLink}" target="_blank">Live Demo <i class="fas fa-external-link-alt"></i></a>
+                                ${project.githubLink ? `<a href="${project.githubLink}" target="_blank">GitHub <i class="fas fa-external-link-alt"></i></a>` : ''}
+                                ${project.liveLink ? `<a href="${project.liveLink}" target="_blank">Live Demo <i class="fas fa-external-link-alt"></i></a>` : ''}
                             </div>
                         </div>
                     `;
                     projectsGrid.appendChild(projectCard);
                 });
+
+                projectsGrid.addEventListener('click', (event) => {
+                    const projectCard = event.target.closest('.project-card');
+                    if (projectCard) {
+                        const imgElement = projectCard.querySelector('img');
+                        if (imgElement && imgElement.dataset.projectId) {
+                            openModal(parseInt(imgElement.dataset.projectId));
+                        }
+                    }
+                });
             }
+            
+            window.addEventListener('resize', () => {
+                if(modal.style.display === 'flex') {
+                    updateCarousel();
+                }
+            });
 
             const themeToggle = document.getElementById('theme-toggle');
             const body = document.body;
